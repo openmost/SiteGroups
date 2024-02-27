@@ -8,20 +8,30 @@
 
 namespace Piwik\Plugins\SiteGroups;
 
+use Piwik\Measurable\Measurable;
+use Piwik\Plugins\SitesManager\API;
+use Piwik\Plugins\SitesManager\API as SiteManager;
+use Piwik\Plugins\SitesManager\Model;
+
 class SiteGroups extends \Piwik\Plugin
 {
     public function registerEvents()
     {
         return [
-            'CronArchive.getArchivingAPIMethodForPlugin' => 'getArchivingAPIMethodForPlugin',
+            'MeasurableSettings.updated' => 'updateSiteGroup',
         ];
     }
 
-    // support archiving just this plugin via core:archive
-    public function getArchivingAPIMethodForPlugin(&$method, $plugin)
+    public function updateSiteGroup(&$args, $idSite)
     {
-        if ($plugin == 'SiteGroups') {
-            $method = 'SiteGroups.getExampleArchivedMetric';
+        if ($args->getPluginName() === 'SiteGroups') {
+            $settings = new \Piwik\Plugins\SiteGroups\MeasurableSettings($idSite);
+            $group = $settings->group->getValue();
+
+            $model = new Model();
+            $model->updateSite(array('group' => $group), $idSite);
         }
+
+        return true;
     }
 }
