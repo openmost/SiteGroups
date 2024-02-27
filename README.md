@@ -2,5 +2,4 @@
 
 ## Description
 
-Add your plugin description here.
-
+Add groups in the site selector.

@@ -1,7 +1,7 @@
 {
     "name": "SiteGroups",
     "description": "Add group to measurables",
-    "version": "0.1.0",
+    "version": "5.0.0",
     "theme": false,
     "require": {
         "matomo": ">=5.0.0-stable,<6.0.0-b1"
