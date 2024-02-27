@@ -1,29 +1,31 @@
 {
     "name": "SiteGroups",
-    "description": "Manager your sites per groups",
+    "description": "Add group to measurables",
     "version": "0.1.0",
     "theme": false,
     "require": {
-        "matomo": ">=5.0.1-stable,<6.0.0-b1"
+        "matomo": ">=5.0.0-stable,<6.0.0-b1"
     },
     "authors": [
         {
-            "name": "Matomo",
-            "email": "",
-            "homepage": ""
+            "name": "Openmost",
+            "email": "ronan@openmost.io",
+            "homepage": "https:\/\/openmost.io"
         }
     ],
     "support": {
-        "email": "",
-        "issues": "",
-        "forum": "",
-        "irc": "",
-        "wiki": "",
-        "source": "",
-        "docs": "",
-        "rss": ""
+        "email": "ronan@openmost.io",
+        "issues": "https:\/\/github.com\/openmost\/SiteGroups\/issues",
+        "source": "https:\/\/github.com\/openmost\/SiteGroups"
     },
-    "homepage": "",
+    "homepage": "https:\/\/openmost.io",
     "license": "GPL v3+",
-    "keywords": []
+    "keywords": [
+        "site",
+        "sites",
+        "group",
+        "groups",
+        "measurable",
+        "measurables"
+    ]
 }

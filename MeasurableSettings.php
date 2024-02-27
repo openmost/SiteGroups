@@ -9,6 +9,7 @@
 namespace Piwik\Plugins\SiteGroups;
 
 use Piwik\Plugins\MobileAppMeasurable\Type as MobileAppType;
+use Piwik\Plugins\SitesManager\API;
 use Piwik\Settings\Setting;
 use Piwik\Settings\FieldConfig;
 
@@ -32,13 +33,17 @@ class MeasurableSettings extends \Piwik\Settings\Measurable\MeasurableSettings
         $this->group = $this->makeGroupSetting();
     }
 
+    /**
+     * @throws \Exception
+     */
     private function makeGroupSetting()
     {
         $type = FieldConfig::TYPE_STRING;
 
-        return $this->makeSetting('group', null, $type, function (FieldConfig $field) {
+        return $this->makeSetting('group', '', $type, function (FieldConfig $field) {
             $field->title = 'Group';
             $field->uiControl = FieldConfig::UI_CONTROL_TEXT;
+            $field->description = 'Will be displayed in the measurable selector';
         });
     }
 }
