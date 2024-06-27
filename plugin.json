@@ -27,5 +27,6 @@
         "groups",
         "measurable",
         "measurables"
-    ]
+    ],
+    "category": "database"
 }
