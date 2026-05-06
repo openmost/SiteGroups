@@ -1,7 +1,7 @@
 {
     "name": "SiteGroups",
     "description": "Add group to measurables",
-    "version": "5.0.5",
+    "version": "5.1.0",
     "theme": false,
     "require": {
         "matomo": ">=5.0.0-stable,<6.0.0-b1"
@@ -10,15 +10,15 @@
         {
             "name": "Openmost",
             "email": "ronan@openmost.io",
-            "homepage": "https:\/\/openmost.io"
+            "homepage": "https:\/\/openmost.com"
         }
     ],
     "support": {
-        "email": "ronan@openmost.io",
+        "email": "ronan@openmost.com",
         "issues": "https:\/\/github.com\/openmost\/SiteGroups\/issues",
         "source": "https:\/\/github.com\/openmost\/SiteGroups"
     },
-    "homepage": "https:\/\/openmost.io",
+    "homepage": "https:\/\/openmost.com",
     "license": "GPL v3+",
     "keywords": [
         "site",

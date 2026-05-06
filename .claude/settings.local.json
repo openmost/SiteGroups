@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep -l \"Events\\\\|postEvent\\\\|addPlugin\")",
+      "Bash(xargs grep -l \"group\")",
+      "Bash(php -l \"C:\\\\wamp64\\\\www\\\\matomo\\\\plugins\\\\SiteGroups\\\\SiteGroups.php\")",
+      "Bash(php -l \"C:\\\\wamp64\\\\www\\\\matomo\\\\plugins\\\\SiteGroups\\\\MeasurableSettings.php\")",
+      "Bash(php -r ' *)",
+      "Bash(C:\\\\wamp64\\\\bin\\\\mariadb\\\\mariadb11.0.2\\\\bin\\\\mariadb.exe *)",
+      "Bash(C:\\\\wamp64\\\\bin\\\\mariadb\\\\mariadb11.5.2\\\\bin\\\\mariadb.exe *)",
+      "Bash(C:\\\\wamp64\\\\bin\\\\mysql\\\\mysql9.1.0\\\\bin\\\\mysql.exe *)",
+      "Bash(php \"C:\\\\wamp64\\\\www\\\\matomo\\\\console\" core:clear-caches)",
+      "Bash(php \"C:\\\\wamp64\\\\www\\\\matomo\\\\console\" cache:list)",
+      "Bash(php \"C:\\\\wamp64\\\\www\\\\matomo\\\\console\" plugin:list)",
+      "Bash(php \"C:\\\\wamp64\\\\www\\\\matomo\\\\plugins\\\\SiteGroups\\\\test_inject.php\")",
+      "Bash(php \"C:\\\\wamp64\\\\www\\\\matomo\\\\plugins\\\\SiteGroups\\\\test_http.php\")",
+      "Bash(xargs grep -l \"postEvent\\\\|renderHook\\\\|SitesManager\\\\..*Event\")"
+    ]
+  }
+}
