@@ -1,15 +1,16 @@
 {
     "name": "SiteGroups",
-    "description": "Add group to measurables",
-    "version": "5.1.0",
+    "description": "Organize your websites into groups, browse them by group in the website selector and in the All Websites dashboard",
+    "version": "6.0.0",
     "theme": false,
     "require": {
-        "matomo": ">=5.0.0-stable,<6.0.0-b1"
+        "php": ">=8.1.0",
+        "matomo": ">=6.0.0-b1,<7.0.0-b1"
     },
     "authors": [
         {
             "name": "Openmost",
-            "email": "ronan@openmost.io",
+            "email": "ronan@openmost.com",
             "homepage": "https:\/\/openmost.com"
         }
     ],
@@ -18,15 +19,19 @@
         "issues": "https:\/\/github.com\/openmost\/SiteGroups\/issues",
         "source": "https:\/\/github.com\/openmost\/SiteGroups"
     },
-    "homepage": "https:\/\/openmost.com",
+    "homepage": "https:\/\/openmost.com\/matomo\/extensions\/site-groups",
     "license": "GPL v3+",
     "keywords": [
         "site",
         "sites",
+        "website",
+        "websites",
         "group",
         "groups",
         "measurable",
-        "measurables"
+        "measurables",
+        "site selector",
+        "all websites"
     ],
     "category": "database"
 }

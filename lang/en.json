@@ -1,0 +1,9 @@
+{
+  "SiteGroups": {
+    "Group": "Group",
+    "GroupDescription": "Websites sharing the same group are listed together in the website selector and in the All Websites dashboard. Pick an existing group or type a new one, leave empty to keep this website ungrouped.",
+    "GroupTooLong": "The group name must not exceed %s characters.",
+    "Ungrouped": "Ungrouped",
+    "ToggleGroup": "Show or hide the websites of the group %s"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "SiteGroups": {
+    "Group": "Groupe",
+    "GroupDescription": "Les sites partageant le même groupe sont regroupés dans le sélecteur de site et dans le tableau de bord Tous les sites. Choisissez un groupe existant ou saisissez-en un nouveau, laissez vide pour ne pas grouper ce site.",
+    "GroupTooLong": "Le nom du groupe ne doit pas dépasser %s caractères.",
+    "Ungrouped": "Sans groupe",
+    "ToggleGroup": "Afficher ou masquer les sites du groupe %s"
+  }
+}
