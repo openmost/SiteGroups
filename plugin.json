@@ -1,7 +1,7 @@
 {
     "name": "SiteGroups",
-    "description": "Organize your websites into groups, browse them by group in the website selector and in the All Websites dashboard",
-    "version": "6.0.0",
+    "description": "Organize your websites into groups and browse them by group in the website selector and All Websites.",
+    "version": "6.0.1",
     "theme": false,
     "require": {
         "php": ">=8.1.0",
@@ -11,15 +11,15 @@
         {
             "name": "Openmost",
             "email": "ronan@openmost.com",
-            "homepage": "https:\/\/openmost.com"
+            "homepage": "https://openmost.com"
         }
     ],
     "support": {
         "email": "ronan@openmost.com",
-        "issues": "https:\/\/github.com\/openmost\/SiteGroups\/issues",
-        "source": "https:\/\/github.com\/openmost\/SiteGroups"
+        "issues": "https://github.com/openmost/SiteGroups/issues",
+        "source": "https://github.com/openmost/SiteGroups"
     },
-    "homepage": "https:\/\/openmost.com\/matomo\/extensions\/site-groups",
+    "homepage": "https://openmost.com/matomo/extensions/site-groups",
     "license": "GPL v3+",
     "keywords": [
         "site",
@@ -30,8 +30,8 @@
         "groups",
         "measurable",
         "measurables",
-        "site selector",
-        "all websites"
+        "site-selector",
+        "all-websites"
     ],
     "category": "database"
 }

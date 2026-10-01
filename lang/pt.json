@@ -1,0 +1,20 @@
+{
+  "SiteGroups": {
+    "Group": "Grupo",
+    "GroupDescription": "Os sites que partilham o mesmo grupo são listados juntos no seletor de sites e no painel Todos os sites. Escolha um grupo existente ou escreva um novo; deixe vazio para manter este site sem grupo.",
+    "GroupTooLong": "O nome do grupo não pode exceder %s carateres.",
+    "Ungrouped": "Sem grupo",
+    "ToggleGroup": "Mostrar ou ocultar os sites do grupo %s"
+  },
+  "OpenmostCommunication": {
+    "Dismiss": "Dispensar",
+    "WidgetName": "Openmost: configuração do seguimento de chatbots de IA",
+    "AIChatbotsTitle": "Precisa de ajuda para configurar o seguimento de chatbots de IA?",
+    "AIChatbotsBody": "Como Implementation Partner oficial da Matomo, a Openmost pode configurar o seguimento de chatbots de IA por si, no Matomo On-Premise ou Cloud.",
+    "AIChatbotsCta": "Pedir a configuração",
+    "TrackingPlanTitle": "Os eventos têm de ser configurados manualmente",
+    "TrackingPlanBody": "Os eventos medem cliques, transferências, envios de formulários ou reproduções de vídeo, desde que sejam seguidos. Como Implementation Partner oficial da Matomo, a Openmost concebe e implementa um plano de marcação adaptado ao seu site.",
+    "TrackingPlanCta": "Criar o meu plano de marcação",
+    "EventsEnhancedLink": "Tire mais partido dos seus eventos com o Events Enhanced"
+  }
+}

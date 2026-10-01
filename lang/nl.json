@@ -1,0 +1,20 @@
+{
+  "SiteGroups": {
+    "Group": "Groep",
+    "GroupDescription": "Websites in dezelfde groep worden samen weergegeven in de websitekiezer en in het dashboard Alle websites. Kies een bestaande groep of typ een nieuwe, laat leeg om deze website niet te groeperen.",
+    "GroupTooLong": "De groepsnaam mag niet langer zijn dan %s tekens.",
+    "Ungrouped": "Niet gegroepeerd",
+    "ToggleGroup": "De websites van de groep %s tonen of verbergen"
+  },
+  "OpenmostCommunication": {
+    "Dismiss": "Sluiten",
+    "WidgetName": "Openmost: instellen van AI-chatbottracking",
+    "AIChatbotsTitle": "Hulp nodig bij het instellen van AI-chatbottracking?",
+    "AIChatbotsBody": "Als officieel Matomo Implementation Partner kan Openmost AI-chatbottracking voor u instellen, op Matomo On-Premise of Cloud.",
+    "AIChatbotsCta": "Laat het voor mij instellen",
+    "TrackingPlanTitle": "Gebeurtenissen moeten handmatig worden ingesteld",
+    "TrackingPlanBody": "Gebeurtenissen meten klikken, downloads, formulierverzendingen of videoweergaven, zodra ze worden gemeten. Als officieel Matomo Implementation Partner ontwerpt en implementeert Openmost een trackingplan dat bij uw site past.",
+    "TrackingPlanCta": "Mijn trackingplan opstellen",
+    "EventsEnhancedLink": "Haal meer uit uw gebeurtenissen met Events Enhanced"
+  }
+}
