@@ -12,7 +12,7 @@ Organize your websites into groups, and browse them by group in the website sele
 
 ## Requirements
 
-- Matomo 5.10.0 or later (`>=5.10.0,<6.0.0-b1`)
+- Matomo 5.0.0 or later (`>=5.0.0,<6.0.0-b1`)
 
 ## Installation / Configuration
 
