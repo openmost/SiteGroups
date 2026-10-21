@@ -1,7 +1,7 @@
 {
     "name": "SiteGroups",
     "description": "Organize your websites into groups and browse them by group in the website selector.",
-    "version": "5.1.0",
+    "version": "5.1.1",
     "theme": false,
     "require": {
         "matomo": ">=5.0.0,<6.0.0-b1"

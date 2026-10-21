@@ -1,5 +1,9 @@
 ## Changelog
 
+### v5.1.1
+
+- Request parameters are read with `Piwik\Request` instead of the deprecated `Common::getRequestVar`, ready for the next Matomo versions.
+
 ### v5.1.0
 
 - Collapsible groups in the website selector: websites sorted by group then by name, "Ungrouped" listed last, groups start collapsed with 10 websites or more, all groups open while searching.
