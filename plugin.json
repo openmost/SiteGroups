@@ -1,7 +1,7 @@
 {
     "name": "SiteGroups",
     "description": "Organize your websites into groups and browse them by group in the website selector and All Websites.",
-    "version": "6.0.1",
+    "version": "6.0.2",
     "theme": false,
     "require": {
         "php": ">=8.1.0",
