@@ -1,5 +1,9 @@
 ## Changelog
 
+### v5.1.2
+
+- Fix: the site groups styles no longer remove the padding of the period selector and the other Matomo dropdowns, they only apply to the site selector.
+
 ### v5.1.1
 
 - Request parameters are read with `Piwik\Request` instead of the deprecated `Common::getRequestVar`, ready for the next Matomo versions.
