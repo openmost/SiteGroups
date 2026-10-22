@@ -10,7 +10,7 @@ This plugin is available in the official marketplace of Matomo. You have to inst
 
 __Who can change the group of a website?__
 
-Any user who can edit the website in *Administration > Websites > Manage*.
+Any user with admin access on the website, in *Administration > Websites > Manage*. A super user can also set it with the `group` parameter of `SitesManager.addSite` and `SitesManager.updateSite`.
 
 __Why are my groups not visible in the website selector?__
 
@@ -22,7 +22,7 @@ When you can access 10 websites or more, groups start collapsed to keep the list
 
 __Are my groups kept when I update to Matomo 6?__
 
-Yes, SiteGroups 6.x moves them automatically to the native Matomo website groups during the update.
+Yes, SiteGroups 5.2 and 6.x both store them as native Matomo website groups.
 
 __Is the plugin active for all Matomo users in my instance?__
 

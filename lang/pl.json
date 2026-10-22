@@ -1,4 +1,11 @@
 {
+    "SiteGroups": {
+        "Group": "Grupa",
+        "GroupDescription": "Strony należące do tej samej grupy są wyświetlane razem w selektorze stron i na pulpicie Wszystkie strony. Wybierz istniejącą grupę lub wpisz nową, pozostaw puste, aby nie przypisywać tej strony do grupy.",
+        "GroupTooLong": "Nazwa grupy nie może przekraczać %s znaków.",
+        "Ungrouped": "Bez grupy",
+        "ToggleGroup": "Pokaż lub ukryj strony grupy %s"
+    },
     "OpenmostCommunication": {
         "Dismiss": "Odrzuć",
         "Matomo6Title": "Matomo 6 jest już dostępne",

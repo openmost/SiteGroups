@@ -1,4 +1,11 @@
 {
+    "SiteGroups": {
+        "Group": "グループ",
+        "GroupDescription": "同じグループのウェブサイトは、ウェブサイトセレクターと全ウェブサイトのダッシュボードでまとめて表示されます。既存のグループを選ぶか新しいグループ名を入力してください。このウェブサイトをグループに入れない場合は空欄のままにしてください。",
+        "GroupTooLong": "グループ名は %s 文字以内にしてください。",
+        "Ungrouped": "グループなし",
+        "ToggleGroup": "グループ %s のウェブサイトを表示 / 非表示"
+    },
     "OpenmostCommunication": {
         "Dismiss": "閉じる",
         "Matomo6Title": "Matomo 6 が登場しました",

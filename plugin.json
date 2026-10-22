@@ -1,7 +1,7 @@
 {
     "name": "SiteGroups",
-    "description": "Organize your websites into groups and browse them by group in the website selector.",
-    "version": "5.1.2",
+    "description": "Organize your websites into groups and browse them by group in the website selector and All Websites.",
+    "version": "5.2.0",
     "theme": false,
     "require": {
         "matomo": ">=5.0.0,<6.0.0-b1"
@@ -26,7 +26,9 @@
         "group",
         "groups",
         "measurable",
-        "measurables"
+        "measurables",
+        "site-selector",
+        "all-websites"
     ],
     "category": "database"
 }

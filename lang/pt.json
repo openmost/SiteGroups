@@ -1,4 +1,11 @@
 {
+    "SiteGroups": {
+        "Group": "Grupo",
+        "GroupDescription": "Os sites que partilham o mesmo grupo são listados juntos no seletor de sites e no painel Todos os sites. Escolha um grupo existente ou escreva um novo; deixe vazio para manter este site sem grupo.",
+        "GroupTooLong": "O nome do grupo não pode exceder %s carateres.",
+        "Ungrouped": "Sem grupo",
+        "ToggleGroup": "Mostrar ou ocultar os sites do grupo %s"
+    },
     "OpenmostCommunication": {
         "Dismiss": "Dispensar",
         "Matomo6Title": "O Matomo 6 chegou",

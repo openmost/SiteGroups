@@ -1,5 +1,19 @@
 ## Changelog
 
+### v5.2.0
+
+- Fix: the `group` parameter of `SitesManager.addSite` and `SitesManager.updateSite` is now taken into account ([#1](https://github.com/openmost/SiteGroups/issues/1)).
+- Groups are now stored in the Matomo website group (`site.group`), like SiteGroups 6.x, so the **All Websites dashboard** lists your websites by group, with totals per group, and the website selector search also finds websites by group name.
+- Existing groups are migrated automatically during the update.
+- The "Group" field suggests the existing groups, and a group typed with a different case joins the existing one ("clients" joins "Clients").
+- Any user with admin access on a website can change its group, groups longer than 250 characters are rejected.
+- The group is updated on the *Websites > Manage* card right after saving a website.
+- New API method `SiteGroups.getSiteGroups`, a light request replacing the full websites list the selector used to load.
+- The `site_group` property of the SitesManager API responses is deprecated, use the core `group` property.
+- Translated group labels in the website selector and on the website cards.
+- PHP integration tests (storage, permissions, migration, API).
+- Requires Matomo 5.0.0 or later (`>=5.0.0,<6.0.0-b1`).
+
 ### v5.1.2
 
 - Fix: the site groups styles no longer remove the padding of the period selector and the other Matomo dropdowns, they only apply to the site selector.

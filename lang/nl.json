@@ -1,4 +1,11 @@
 {
+    "SiteGroups": {
+        "Group": "Groep",
+        "GroupDescription": "Websites in dezelfde groep worden samen weergegeven in de websitekiezer en in het dashboard Alle websites. Kies een bestaande groep of typ een nieuwe, laat leeg om deze website niet te groeperen.",
+        "GroupTooLong": "De groepsnaam mag niet langer zijn dan %s tekens.",
+        "Ungrouped": "Niet gegroepeerd",
+        "ToggleGroup": "De websites van de groep %s tonen of verbergen"
+    },
     "OpenmostCommunication": {
         "Dismiss": "Sluiten",
         "Matomo6Title": "Matomo 6 is er",

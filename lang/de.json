@@ -1,4 +1,11 @@
 {
+    "SiteGroups": {
+        "Group": "Gruppe",
+        "GroupDescription": "Webseiten mit derselben Gruppe werden in der Webseiten-Auswahl und im Dashboard „Alle Webseiten“ zusammen aufgeführt. Wählen Sie eine bestehende Gruppe oder geben Sie eine neue ein; leer lassen, um diese Webseite keiner Gruppe zuzuordnen.",
+        "GroupTooLong": "Der Gruppenname darf höchstens %s Zeichen lang sein.",
+        "Ungrouped": "Ohne Gruppe",
+        "ToggleGroup": "Webseiten der Gruppe %s ein- oder ausblenden"
+    },
     "OpenmostCommunication": {
         "Dismiss": "Ausblenden",
         "Matomo6Title": "Matomo 6 ist da",

@@ -1,4 +1,11 @@
 {
+    "SiteGroups": {
+        "Group": "Grupo",
+        "GroupDescription": "Los sitios web del mismo grupo se muestran juntos en el selector de sitios web y en el tablero Todos los sitios web. Elija un grupo existente o escriba uno nuevo; déjelo vacío para no agrupar este sitio web.",
+        "GroupTooLong": "El nombre del grupo no debe superar los %s caracteres.",
+        "Ungrouped": "Sin grupo",
+        "ToggleGroup": "Mostrar u ocultar los sitios web del grupo %s"
+    },
     "OpenmostCommunication": {
         "Dismiss": "Descartar",
         "Matomo6Title": "Matomo 6 ya está aquí",

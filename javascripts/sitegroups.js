@@ -28,16 +28,57 @@
     'use strict';
 
     var UNGROUPED_KEY    = '__sitegroups_ungrouped__';
-    var UNGROUPED_LABEL  = 'Ungrouped';
     var HEADER_CLASS     = 'sitegroup-header';
+    var DATALIST_ID      = 'sitegroups-suggestions';
     // Above this threshold, groups start collapsed by default. Counted
     // against total accessible sites (groupCache), not what Vue currently
     // shows — Vue caps initial loads at autocomplete page size.
     var COLLAPSE_DEFAULT_THRESHOLD = 10;
 
+    var EXPANDED_STORAGE_KEY = 'SiteGroups.expandedGroups';
+
+    function readExpandedGroups() {
+        try {
+            var value = JSON.parse(window.localStorage.getItem(EXPANDED_STORAGE_KEY) || '{}');
+            return value && typeof value === 'object' ? value : {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    function writeExpandedGroups(groups) {
+        try {
+            window.localStorage.setItem(EXPANDED_STORAGE_KEY, JSON.stringify(groups));
+        } catch (e) {
+            // private browsing or storage disabled: the choice lasts until the next page load
+        }
+    }
+
+    // true = expanded, false = collapsed, keyed by group key
+    var expandedGroups   = readExpandedGroups();
     var groupCache       = null;
     var groupPromise     = null;
     var refreshAttempted = {};
+
+    function translate(key, fallback) {
+        var args = Array.prototype.slice.call(arguments, 2);
+        if (typeof window._pk_translate === 'function') {
+            var translated = window._pk_translate(key, args);
+            if (translated && translated !== key) {
+                return translated;
+            }
+        }
+        return fallback;
+    }
+
+    // Groups are kept as stored (HTML encoded by the API input sanitizing), which is what the
+    // core site selector prefixes names with. They are decoded only when displayed.
+    function decodeGroup(group) {
+        if (window.piwikHelper && typeof window.piwikHelper.htmlDecode === 'function') {
+            return window.piwikHelper.htmlDecode(group);
+        }
+        return group;
+    }
 
     function buildMap(sites) {
         var map = {};
@@ -45,7 +86,7 @@
             for (var i = 0; i < sites.length; i++) {
                 var site = sites[i];
                 if (site && typeof site.idsite !== 'undefined') {
-                    map[String(site.idsite)] = (site.site_group || '').toString();
+                    map[String(site.idsite)] = (site.group || '').toString();
                 }
             }
         }
@@ -56,14 +97,12 @@
         var coreHome = window.CoreHome;
         if (coreHome && coreHome.AjaxHelper && typeof coreHome.AjaxHelper.fetch === 'function') {
             return coreHome.AjaxHelper.fetch({
-                method:     'SitesManager.getSitesWithMinimumAccess',
-                permission: 'view',
-                limit:      10000
+                method:       'SiteGroups.getSiteGroups',
+                filter_limit: '-1'
             });
         }
         return fetch(
-            '?module=API&method=SitesManager.getSitesWithMinimumAccess'
-            + '&permission=view&limit=10000&format=JSON',
+            '?module=API&method=SiteGroups.getSiteGroups&filter_limit=-1&format=JSON',
             { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } }
         ).then(function (r) { return r.json(); });
     }
@@ -127,6 +166,36 @@
         return !!(input && input.value && input.value.trim());
     }
 
+    // The core site selector prefixes names with "[group] " when a website has a group. The
+    // headers already show it, so the prefix is removed from the link text, keeping the search
+    // highlight markup.
+    function stripGroupPrefix(anchor, group) {
+        if (!group || anchor.__sitegroupsStripped === anchor.innerHTML) {
+            return;
+        }
+
+        // case insensitive: the search highlight shows the matched part with the casing typed
+        var prefix       = '[' + group + '] ';
+        var prefixLength = prefix.length;
+        var text         = anchor.textContent || '';
+        if (text.substring(0, prefixLength).toLowerCase() === prefix.toLowerCase()) {
+            var walker = document.createTreeWalker(anchor, NodeFilter.SHOW_TEXT, null, false);
+            while (prefixLength > 0 && walker.nextNode()) {
+                var node    = walker.currentNode;
+                var removed = Math.min(prefixLength, node.data.length);
+                node.deleteData(0, removed);
+                prefixLength -= removed;
+            }
+        }
+
+        var title = anchor.getAttribute('title');
+        if (title && title.indexOf(prefix) === 0) {
+            anchor.setAttribute('title', title.substring(prefix.length));
+        }
+
+        anchor.__sitegroupsStripped = anchor.innerHTML;
+    }
+
     function buildHeader(label, groupKey) {
         var li = document.createElement('li');
         li.className = HEADER_CLASS;
@@ -142,6 +211,7 @@
         var labelSpan = document.createElement('span');
         labelSpan.className = 'sitegroup-header-label';
         labelSpan.textContent = label;
+        li.setAttribute('aria-label', translate('SiteGroups_ToggleGroup', label, label));
 
         var countSpan = document.createElement('span');
         countSpan.className = 'sitegroup-header-count';
@@ -158,12 +228,8 @@
             }
             var parentUl = li.parentElement;
             if (!parentUl) { return; }
-            if (!parentUl.__userPrefs) {
-                parentUl.__userPrefs = {};
-            }
-            var currentlyCollapsed = li.hasAttribute('data-collapsed');
-            // Store true=expanded, false=collapsed.
-            parentUl.__userPrefs[groupKey] = currentlyCollapsed;
+            expandedGroups[groupKey] = li.hasAttribute('data-collapsed');
+            writeExpandedGroups(expandedGroups);
             if (typeof parentUl.__sitegroupsApply === 'function') {
                 parentUl.__sitegroupsApply();
             }
@@ -222,8 +288,10 @@
             }
 
             var group      = groupMap[idSite] || '';
-            var groupKey   = group ? group.toLowerCase() : UNGROUPED_KEY;
-            var groupLabel = group || UNGROUPED_LABEL;
+            var groupLabel = group ? decodeGroup(group) : translate('SiteGroups_Ungrouped', 'Ungrouped');
+            var groupKey   = group ? groupLabel.toLowerCase() : UNGROUPED_KEY;
+
+            stripGroupPrefix(anchor, group);
 
             li.setAttribute('data-sitegroup-id', idSite);
             li.setAttribute('data-sitegroup-key', groupKey);
@@ -265,7 +333,9 @@
         var searchActive     = isSearchActive(ul);
         var totalSites       = totalAccessibleSites();
         var defaultCollapsed = !searchActive && totalSites >= COLLAPSE_DEFAULT_THRESHOLD;
-        if (!ul.__userPrefs) { ul.__userPrefs = {}; }
+        var currentIdSite    = window.piwik && window.piwik.idSite ? String(window.piwik.idSite) : '';
+        var activeGroup      = currentIdSite ? (groupMap[currentIdSite] || '') : null;
+        var activeGroupKey   = activeGroup === null ? null : (activeGroup ? decodeGroup(activeGroup).toLowerCase() : UNGROUPED_KEY);
 
         // Walk groups in display order, assigning a contiguous order range
         // so each header sits just above its rows.
@@ -276,14 +346,15 @@
             var grp  = groups[g];
             seenKeys[grp.key] = true;
 
-            var pref = ul.__userPrefs[grp.key];
+            var pref = expandedGroups[grp.key];
             var collapsed;
             if (searchActive) {
                 collapsed = false;
-            } else if (typeof pref !== 'undefined') {
+            } else if (typeof pref === 'boolean') {
                 collapsed = !pref;
             } else {
-                collapsed = defaultCollapsed;
+                // the group of the current website stays open
+                collapsed = defaultCollapsed && grp.key !== activeGroupKey;
             }
 
             var header = existingHeaders[grp.key];
@@ -295,6 +366,7 @@
                 var labelEl = header.querySelector('.sitegroup-header-label');
                 if (labelEl && labelEl.textContent !== grp.label) {
                     labelEl.textContent = grp.label;
+                    header.setAttribute('aria-label', translate('SiteGroups_ToggleGroup', grp.label, grp.label));
                 }
             }
             var countEl = header.querySelector('.sitegroup-header-count');
@@ -363,7 +435,7 @@
             childList:       true,
             subtree:         true,
             attributes:      true,
-            attributeFilter: ['href', 'style']
+            attributeFilter: ['href', 'style', 'title']
         });
 
         apply();
@@ -377,10 +449,7 @@
     }
 
     function decorateCard(card, groupMap) {
-        if (!card || card.__sitegroupsDecorated) {
-            return false;
-        }
-        var idSite = card.getAttribute('idsite');
+        var idSite = card ? card.getAttribute('idsite') : null;
         if (!idSite) {
             return false;
         }
@@ -390,33 +459,42 @@
             return 'unknown';
         }
 
+        var firstUl = card.querySelector('.card-content .row .col ul');
+        if (!firstUl) {
+            return false; // edit mode
+        }
+
+        var info  = firstUl.querySelector('.sitegroup-card-info');
         var group = groupMap[key];
         if (!group) {
-            card.__sitegroupsDecorated = true;
+            if (info) {
+                info.parentNode.removeChild(info);
+            }
             return false;
         }
 
-        var firstUl = card.querySelector('.card-content .row .col ul');
-        if (!firstUl) {
-            return false;
-        }
-        if (firstUl.querySelector('.sitegroup-card-info')) {
-            card.__sitegroupsDecorated = true;
+        var labelText = translate('SiteGroups_Group', 'Group') + ':';
+        var groupText = ' ' + decodeGroup(group);
+        // writing only on changes, the observer would otherwise render the card again and again
+        if (info && info.textContent === labelText + groupText) {
             return true;
         }
 
-        var li = document.createElement('li');
-        li.className = 'sitegroup-card-info';
+        if (!info) {
+            info = document.createElement('li');
+            info.className = 'sitegroup-card-info';
+            firstUl.appendChild(info);
+        }
 
         var label = document.createElement('span');
         label.className = 'title';
-        label.textContent = 'Group:';
+        label.textContent = labelText;
 
-        li.appendChild(label);
-        li.appendChild(document.createTextNode(' ' + group));
-
-        firstUl.appendChild(li);
-        card.__sitegroupsDecorated = true;
+        while (info.firstChild) {
+            info.removeChild(info.firstChild);
+        }
+        info.appendChild(label);
+        info.appendChild(document.createTextNode(groupText));
         return true;
     }
 
@@ -435,12 +513,12 @@
         return matched;
     }
 
-    function scanCards(root) {
-        var cards = collectCards(root || document);
+    function scanCards(root, reload) {
+        var cards = Array.isArray(root) ? root : collectCards(root || document);
         if (!cards.length) {
             return;
         }
-        fetchGroupMap().then(function (map) {
+        (reload ? refreshGroupMap() : fetchGroupMap()).then(function (map) {
             var needsRefresh = false;
             for (var i = 0; i < cards.length; i++) {
                 var result = decorateCard(cards[i], map);
@@ -463,20 +541,76 @@
         });
     }
 
+    // Suggests the existing groups in the website "Group" field, so a group is picked rather than
+    // typed again with a different spelling. The field points to this datalist (MeasurableSettings).
+    function fillDatalist() {
+        fetchGroupMap().then(function (map) {
+            var names = {};
+            Object.keys(map).forEach(function (idSite) {
+                var group = decodeGroup(map[idSite]);
+                var key   = group.toLowerCase();
+                if (group && !Object.prototype.hasOwnProperty.call(names, key)) {
+                    names[key] = group;
+                }
+            });
+
+            var datalist = document.getElementById(DATALIST_ID);
+            if (!datalist) {
+                datalist = document.createElement('datalist');
+                datalist.id = DATALIST_ID;
+                document.body.appendChild(datalist);
+            }
+            while (datalist.firstChild) {
+                datalist.removeChild(datalist.firstChild);
+            }
+
+            Object.keys(names).map(function (key) { return names[key]; }).sort(compareStrings).forEach(function (group) {
+                var option = document.createElement('option');
+                option.value = group;
+                datalist.appendChild(option);
+            });
+        });
+    }
+
     function init() {
         if (!window.MutationObserver) {
             return;
         }
 
+        document.addEventListener('focusin', function (event) {
+            var target = event.target;
+            if (target && target.tagName === 'INPUT' && target.getAttribute('list') === DATALIST_ID) {
+                fillDatalist();
+            }
+        });
+
         scanSelectors(document);
         scanCards(document);
 
         var topObserver = new MutationObserver(function (mutations) {
+            var leftEditMode = [];
             for (var i = 0; i < mutations.length; i++) {
-                var added = mutations[i].addedNodes;
+                var mutation = mutations[i];
+                var target   = mutation.target;
+
+                // a card leaving edit mode may have a new group
+                if (mutation.type === 'attributes') {
+                    if (target.matches && target.matches('.site.card[idsite]')
+                        && (mutation.oldValue || '').indexOf('editingSite') !== -1
+                        && !target.classList.contains('editingSite')) {
+                        leftEditMode.push(target);
+                    }
+                    continue;
+                }
+
+                if (target.closest && target.closest('.sitegroup-card-info')) {
+                    continue;
+                }
+
+                var added = mutation.addedNodes;
                 for (var j = 0; j < added.length; j++) {
                     var n = added[j];
-                    if (n.nodeType !== 1) { continue; }
+                    if (n.nodeType !== 1 || n.classList.contains('sitegroup-card-info')) { continue; }
                     if (n.matches && n.matches('.custom_select_ul_list')) {
                         enhance(n);
                     } else if (n.querySelectorAll) {
@@ -485,13 +619,25 @@
                             enhance(nested[k]);
                         }
                     }
-                    if (collectCards(n).length) {
+                    var card = n.closest ? n.closest('.site.card[idsite]') : null;
+                    if (card) {
+                        scanCards([card]);
+                    } else if (collectCards(n).length) {
                         scanCards(n);
                     }
                 }
             }
+            if (leftEditMode.length) {
+                scanCards(leftEditMode, true);
+            }
         });
-        topObserver.observe(document.body, { childList: true, subtree: true });
+        topObserver.observe(document.body, {
+            childList:         true,
+            subtree:           true,
+            attributes:        true,
+            attributeFilter:   ['class'],
+            attributeOldValue: true
+        });
     }
 
     if (document.readyState === 'loading') {

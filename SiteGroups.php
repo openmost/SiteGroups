@@ -8,9 +8,6 @@
 
 namespace Piwik\Plugins\SiteGroups;
 
-use Piwik\Common;
-use Piwik\Db;
-
 class SiteGroups extends \Piwik\Plugin
 {
     public function registerEvents()
@@ -22,13 +19,21 @@ class SiteGroups extends \Piwik\Plugin
             'Site.setSites'                   => 'injectSiteGroup',
             'AssetManager.getJavaScriptFiles' => 'getJsFiles',
             'AssetManager.getStylesheetFiles' => 'getStylesheetFiles',
+            'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
         ];
     }
 
+    public function activate()
+    {
+        // an install reactivating the plugin may still hold the groups saved by SiteGroups 5.1 and older
+        LegacySettingsMigration::run();
+    }
+
     /**
-     * Bulk-load the SiteGroups.siteGroup setting for every site in the array
-     * and expose it on each site object as `site_group`. Runs once per
-     * SitesManager API call, regardless of how many sites are returned.
+     * Keeps the `site_group` property of the SitesManager API responses that SiteGroups 5.1 and
+     * older added, now a copy of the core `group` property where the groups are stored.
+     *
+     * @deprecated read the core `group` property, `site_group` is no longer returned by SiteGroups 6.x
      */
     public function injectSiteGroup(&$sites)
     {
@@ -36,53 +41,9 @@ class SiteGroups extends \Piwik\Plugin
             return;
         }
 
-        $idSites = [];
-        foreach ($sites as $site) {
-            if (isset($site['idsite'])) {
-                $idSites[] = (int) $site['idsite'];
-            }
-        }
-
-        if (empty($idSites)) {
-            return;
-        }
-
-        $placeholders = implode(',', array_fill(0, count($idSites), '?'));
-        $table        = Common::prefixTable('site_setting');
-        $sql          = "SELECT idsite, setting_name, setting_value FROM `$table`
-                         WHERE plugin_name = ? AND setting_name IN (?, ?)
-                         AND idsite IN ($placeholders)";
-        $bind         = array_merge(['SiteGroups', 'siteGroup', 'group'], $idSites);
-
-        try {
-            $rows = Db::fetchAll($sql, $bind);
-        } catch (\Exception $e) {
-            $rows = [];
-        }
-
-        // Prefer the new 'siteGroup' setting, otherwise fall back to the legacy
-        // 'group' setting that older plugin versions wrote into the same table.
-        $groupByIdSite = [];
-        foreach ($rows as $row) {
-            $idSite = (int) $row['idsite'];
-            $name   = $row['setting_name'];
-            $value  = (string) $row['setting_value'];
-            if ($name === 'siteGroup' && $value !== '') {
-                $groupByIdSite[$idSite] = $value;
-            } elseif ($name === 'group' && $value !== '' && !isset($groupByIdSite[$idSite])) {
-                $groupByIdSite[$idSite] = $value;
-            }
-        }
-
         foreach ($sites as &$site) {
-            $idSite = isset($site['idsite']) ? (int) $site['idsite'] : 0;
-            if (!empty($groupByIdSite[$idSite])) {
-                $site['site_group'] = $groupByIdSite[$idSite];
-            } elseif (!empty($site['group'])) {
-                // Last-resort fallback: pre-existing data in the core site.group column.
-                $site['site_group'] = (string) $site['group'];
-            } else {
-                $site['site_group'] = '';
+            if (is_array($site)) {
+                $site['site_group'] = trim((string) ($site['group'] ?? ''));
             }
         }
     }
@@ -95,6 +56,13 @@ class SiteGroups extends \Piwik\Plugin
     public function getStylesheetFiles(&$stylesheets)
     {
         $stylesheets[] = 'plugins/SiteGroups/stylesheets/sitegroups.less';
+    }
+
+    public function getClientSideTranslationKeys(&$translationKeys)
+    {
+        $translationKeys[] = 'SiteGroups_Group';
+        $translationKeys[] = 'SiteGroups_Ungrouped';
+        $translationKeys[] = 'SiteGroups_ToggleGroup';
     }
 
     public function renderOpenmostCommunication(&$out, $layout, $module = '', $action = '')
