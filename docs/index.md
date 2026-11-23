@@ -22,6 +22,14 @@ As soon as one website has a group, the website selector lists your websites und
 - with 10 websites or more, groups start collapsed except the group of the current website. The groups you open or close are remembered in your browser,
 - while searching, all groups are open. The search also matches group names.
 
+The selector lists 15 websites by default, and 15 search results at most. With more websites, raise the Matomo setting `site_selector_max_sites` so every group is complete without searching:
+
+```ini
+; config/config.ini.php
+[General]
+site_selector_max_sites = 100
+```
+
 ### All Websites dashboard
 
 The groups are the Matomo website groups, so the All Websites dashboard lists your websites by group, with the totals of each group.

@@ -24,6 +24,7 @@ Organize your websites into groups, and browse them by group in the website sele
 
 1. Install and activate the plugin from *Administration > Platform > Marketplace*.
 2. Edit a website in *Administration > Websites > Manage* and fill in the **Group** field. Leave it empty to remove the website from its group.
+3. More than 15 websites? The Matomo website selector lists 15 websites by default. Raise `site_selector_max_sites` in the `[General]` section of `config/config.ini.php` (for example `site_selector_max_sites = 100`) to see every group complete without searching.
 
 Groups saved with SiteGroups 5.x are moved automatically to the Matomo website groups during the update. Groups are kept if the plugin is uninstalled. See [docs/index.md](docs/index.md).
 

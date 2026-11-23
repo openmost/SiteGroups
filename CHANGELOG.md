@@ -1,5 +1,9 @@
 ## Changelog
 
+## v6.0.3
+
+- Documentation: how to list more than 15 websites in the website selector with the Matomo setting `site_selector_max_sites`.
+
 ## v6.0.2
 
 - Request parameters are read with `Piwik\Request` instead of the deprecated `Common::getRequestVar`, ready for the next Matomo versions.

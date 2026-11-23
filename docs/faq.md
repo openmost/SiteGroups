@@ -20,6 +20,17 @@ __Why are all the groups collapsed?__
 
 When you can access 10 websites or more, groups start collapsed, except the group of the current website, to keep the list short. Open the groups you use: your choice is remembered in your browser. While searching, all groups are open.
 
+__Why does the website selector show only some of my websites?__
+
+The Matomo website selector loads 15 websites when it opens, and shows 15 results at most for a search. The groups are built from these websites, so with more websites a group can look incomplete, or be missing until you search for it. To list more websites, raise `site_selector_max_sites` in the `[General]` section of `config/config.ini.php`:
+
+```ini
+[General]
+site_selector_max_sites = 100
+```
+
+This is a Matomo setting, it applies to every user of the instance. A very high value loads more data each time the selector opens.
+
 __Are my groups kept if I uninstall the plugin?__
 
 Yes. Groups are stored as Matomo website groups, the All Websites dashboard keeps listing your websites by group. They can still be changed with the `SitesManager.updateSite` API (super user access required).
