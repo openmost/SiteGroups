@@ -7,8 +7,8 @@ Organize your websites into groups, and browse them by group in the website sele
 ### Features
 
 - **Group field on every website**: set the group in *Administration > Websites > Manage*. Existing groups are suggested while typing, and a group typed with a different case joins the existing one ("clients" joins "Clients").
-- **Grouped website selector**: websites are listed under collapsible group headers, sorted by group then by name, with the website id before each name. Websites without a group are listed last under "Ungrouped".
-- **Smart defaults**: with 10 websites or more, groups start collapsed. While searching, all groups are open and the search also matches group names.
+- **Grouped website selector**: websites are listed under collapsible group headers showing the number of websites, sorted by group then by name, with the website id before each name. Websites without a group are listed last under "Ungrouped".
+- **Smart defaults**: with 10 websites or more, groups start collapsed except the group of the current website, and the groups you open or close are remembered in your browser. While searching, all groups are open and the search also matches group names.
 - **All Websites dashboard by group**: groups are stored as native Matomo website groups, so the All Websites dashboard lists your websites by group, with totals per group.
 - **SitesManager API**: the `group` parameter of `SitesManager.addSite` and `SitesManager.updateSite` sets the group shown by the plugin.
 - **Website cards**: the group is shown on the *Websites > Manage* cards.
@@ -24,6 +24,7 @@ Organize your websites into groups, and browse them by group in the website sele
 
 1. Install and activate the plugin from *Administration > Platform > Marketplace*.
 2. Edit a website in *Administration > Websites > Manage* and fill in the **Group** field. Leave it empty to remove the website from its group.
+3. More than 15 websites? The Matomo website selector lists 15 websites by default. Raise `site_selector_max_sites` in the `[General]` section of `config/config.ini.php` (for example `site_selector_max_sites = 100`) to see every group complete without searching.
 
 Groups saved with SiteGroups 5.1 and older are moved automatically to the Matomo website groups during the update to 5.2. Groups are kept if the plugin is uninstalled, and when you update to Matomo 6 and SiteGroups 6.x. See [docs/index.md](docs/index.md).
 

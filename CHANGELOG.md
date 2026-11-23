@@ -1,5 +1,9 @@
 ## Changelog
 
+### v5.2.1
+
+- Documentation: how to list more than 15 websites in the website selector with the Matomo setting `site_selector_max_sites`, and the full list of website selector behaviors.
+
 ### v5.2.0
 
 - Fix: the `group` parameter of `SitesManager.addSite` and `SitesManager.updateSite` is now taken into account ([#1](https://github.com/openmost/SiteGroups/issues/1)).
